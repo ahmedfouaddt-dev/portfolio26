@@ -76,9 +76,10 @@ export default function Header2({
                           My Projects
                         </Link>
                       </li>
-                      <li className="nav-item">
-                        <Link className="nav-link" href="/sell">
-                          Templates
+                      <li className="nav-item spotlight-nav-item">
+                        <Link className="nav-link spotlight-link" href="/sell">
+                          <span className="spotlight-text">Templates</span>
+                          <i className="ri-flashlight-fill spotlight-icon"></i>
                         </Link>
                       </li>
                     </ul>

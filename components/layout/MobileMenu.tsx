@@ -81,6 +81,16 @@ export default function MobileMenu({ isMobileMenu, handleMobileMenu }: any) {
                         Contact
                       </Link>
                     </li>
+                    <li className="nav-item spotlight-nav-item">
+                      <Link
+                        className="nav-link spotlight-link"
+                        href="/sell"
+                        onClick={handleMobileMenu}
+                      >
+                        <span className="spotlight-text">Templates</span>
+                        <i className="ri-flashlight-fill spotlight-icon"></i>
+                      </Link>
+                    </li>
                   </ul>
 
                   {/* Contact Info Section with your real data */}

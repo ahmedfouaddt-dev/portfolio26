@@ -14446,4 +14446,174 @@ strong {
   }
 }
 
+/* ==========================================
+   Spotlight Animation for Templates Button
+   ========================================== */
+
+/* Keyframe animations */
+@keyframes spotlight-glow {
+  0%, 100% {
+    box-shadow:
+      0 0 10px rgba(110, 78, 242, 0.3),
+      0 0 20px rgba(110, 78, 242, 0.2),
+      0 0 30px rgba(110, 78, 242, 0.1);
+    transform: translateY(0);
+  }
+  50% {
+    box-shadow:
+      0 0 20px rgba(110, 78, 242, 0.6),
+      0 0 40px rgba(110, 78, 242, 0.4),
+      0 0 60px rgba(110, 78, 242, 0.2);
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes spotlight-pulse {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes spotlight-shine {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+@keyframes icon-bounce {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-3px) rotate(-10deg);
+  }
+  75% {
+    transform: translateY(-3px) rotate(10deg);
+  }
+}
+
+/* Spotlight nav item container */
+.spotlight-nav-item {
+  position: relative;
+  z-index: 1;
+}
+
+/* Spotlight link styling */
+.spotlight-link {
+  position: relative;
+  display: inline-flex !important;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px !important;
+  border-radius: 25px;
+  background: linear-gradient(135deg, #6e4ef2 0%, #8b6ef7 100%);
+  color: #fff !important;
+  font-weight: 600;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  animation: spotlight-glow 2s ease-in-out infinite;
+}
+
+/* Animated shine effect overlay */
+.spotlight-link::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 200%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 100%
+  );
+  animation: spotlight-shine 3s linear infinite;
+  pointer-events: none;
+}
+
+/* Pulsing background glow */
+.spotlight-link::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  animation: spotlight-pulse 2s ease-in-out infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Text styling */
+.spotlight-text {
+  position: relative;
+  z-index: 2;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Icon styling with bounce animation */
+.spotlight-icon {
+  position: relative;
+  z-index: 2;
+  font-size: 18px;
+  animation: icon-bounce 2s ease-in-out infinite;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+/* Hover effect */
+.spotlight-link:hover {
+  background: linear-gradient(135deg, #5a3cd9 0%, #7858e6 100%);
+  transform: translateY(-3px);
+  box-shadow:
+    0 0 25px rgba(110, 78, 242, 0.7),
+    0 0 50px rgba(110, 78, 242, 0.5),
+    0 0 75px rgba(110, 78, 242, 0.3),
+    0 5px 20px rgba(0, 0, 0, 0.2);
+}
+
+.spotlight-link:hover .spotlight-icon {
+  animation: icon-bounce 0.5s ease-in-out infinite;
+}
+
+/* Dark mode adjustments */
+[data-bs-theme=dark] .spotlight-link {
+  background: linear-gradient(135deg, #7858e6 0%, #9b7ef9 100%);
+  box-shadow:
+    0 0 15px rgba(168, 255, 83, 0.3),
+    0 0 30px rgba(168, 255, 83, 0.2),
+    0 0 45px rgba(168, 255, 83, 0.1);
+}
+
+[data-bs-theme=dark] .spotlight-link:hover {
+  background: linear-gradient(135deg, #8b6ef7 0%, #a88dfa 100%);
+  box-shadow:
+    0 0 30px rgba(168, 255, 83, 0.6),
+    0 0 60px rgba(168, 255, 83, 0.4),
+    0 0 90px rgba(168, 255, 83, 0.2),
+    0 5px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive adjustments */
+@media (max-width: 991px) {
+  .spotlight-link {
+    padding: 8px 16px !important;
+    font-size: 14px;
+  }
+
+  .spotlight-icon {
+    font-size: 16px;
+  }
+}
+
 /*# sourceMappingURL=main.css.map */
