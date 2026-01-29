@@ -103,7 +103,7 @@ export default function ClientTemplateGrid({
                     <h5 className="card-title mb-3">{it.name}</h5>
 
                     {/* Image Carousel or Placeholder */}
-                    {it.screenshots.length > 0 ? (
+                    {it.screenshots && it.screenshots.length > 0 ? (
                       <div className="mb-3">
                         <ClientImageCarousel
                           images={it.screenshots}
@@ -161,7 +161,7 @@ export default function ClientTemplateGrid({
 
                     <div className="mt-auto d-flex gap-2">
                       {/* Preview button - opens modal if images exist, otherwise links to external URL */}
-                      {it.screenshots.length > 0 ? (
+                      {it.screenshots && it.screenshots.length > 0 ? (
                         <button
                           className="btn btn-outline-primary"
                           onClick={() => openModal(it)}
@@ -184,8 +184,11 @@ export default function ClientTemplateGrid({
                         href={`/pricing?template=${it.id}`}
                         className="btn btn-primary"
                         onClick={() => {
-                          if (typeof window !== 'undefined') {
-                            sessionStorage.setItem('selectedTemplate', JSON.stringify(it));
+                          if (typeof window !== "undefined") {
+                            sessionStorage.setItem(
+                              "selectedTemplate",
+                              JSON.stringify(it),
+                            );
                           }
                         }}
                       >
