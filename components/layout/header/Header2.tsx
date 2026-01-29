@@ -42,32 +42,32 @@ export default function Header2({
                   >
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                       <li className="nav-item">
-                        <Link className="nav-link active" href="/portfolio26/#about">
+                        <Link className="nav-link active" href="/#about">
                           About me
                         </Link>
                       </li>
                       <li className="nav-item">
-                        <Link className="nav-link" href="/portfolio26/#resume">
+                        <Link className="nav-link" href="/#resume">
                           Resume
                         </Link>
                       </li>
                       <li className="nav-item">
-                        <Link className="nav-link" href="/portfolio26/#services">
+                        <Link className="nav-link" href="/#services">
                           Services
                         </Link>
                       </li>
                       <li className="nav-item">
-                        <Link className="nav-link" href="/portfolio26/#portfolio">
+                        <Link className="nav-link" href="/#portfolio">
                           Portfolio
                         </Link>
                       </li>
                       <li className="nav-item">
-                        <Link className="nav-link" href="/portfolio26/#blog">
+                        <Link className="nav-link" href="/#blog">
                           Blog
                         </Link>
                       </li>
                       <li className="nav-item">
-                        <Link className="nav-link" href="/portfolio26/#contact">
+                        <Link className="nav-link" href="/#contact">
                           Contact
                         </Link>
                       </li>
