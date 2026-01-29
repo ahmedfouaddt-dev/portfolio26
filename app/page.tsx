@@ -12,7 +12,7 @@ import Static2 from "@/components/sections/Static2";
 export default function HomePage2() {
   return (
     <>
-      <Layout headerStyle={2} footerStyle={2}>
+      <Layout>
         <Home2 />
         <Static2 />
         {/* <Coporation2 /> */}

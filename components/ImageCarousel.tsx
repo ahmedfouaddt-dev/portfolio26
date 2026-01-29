@@ -6,25 +6,38 @@ import { useState } from "react";
 
 interface ImageCarouselProps {
   images: string[];
+  compact?: boolean;
 }
 
-export default function ImageCarousel({ images }: ImageCarouselProps) {
+export default function ImageCarousel({
+  images,
+  compact = false,
+}: ImageCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [zoom, setZoom] = useState({ x: 50, y: 50, active: false });
 
   const nextSlide = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex === images.length - 1 ? 0 : prevIndex + 1
+      prevIndex === images.length - 1 ? 0 : prevIndex + 1,
     );
   };
 
   const prevSlide = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? images.length - 1 : prevIndex - 1
+      prevIndex === 0 ? images.length - 1 : prevIndex - 1,
     );
   };
 
   const goToSlide = (index: number) => {
     setCurrentIndex(index);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (compact) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    setZoom({ x, y, active: true });
   };
 
   if (images.length === 0) {
@@ -35,21 +48,33 @@ export default function ImageCarousel({ images }: ImageCarouselProps) {
     );
   }
 
+  const arrowSize = compact ? "40px" : "50px";
+  const arrowPosition = compact ? "10px" : "20px";
+
   return (
     <div className="image-carousel position-relative">
       {/* Main Image */}
-      <div className="carousel-main mb-4">
-        <Image
+      <div
+        className={compact ? "carousel-main" : "carousel-main mb-4"}
+        onMouseMove={handleMouseMove}
+        onMouseEnter={() =>
+          !compact && setZoom((prev) => ({ ...prev, active: true }))
+        }
+        onMouseLeave={() => setZoom((prev) => ({ ...prev, active: false }))}
+        style={{ cursor: compact ? "default" : "zoom-in", overflow: "hidden" }}
+      >
+        <img
           src={images[currentIndex]}
           alt={`Project screenshot ${currentIndex + 1}`}
-          width={800}
-          height={500}
-          quality={100}
           className="rounded-2 shadow-lg w-100"
           style={{
-            height: "500px",
-            objectFit: "contain",
+            height: compact ? "220px" : "auto",
+            maxHeight: compact ? "220px" : "70vh",
+            objectFit: compact ? "cover" : "contain",
             backgroundColor: "#f8f9fa",
+            transition: "transform 0.1s ease-out",
+            transform: zoom.active && !compact ? "scale(2)" : "scale(1)",
+            transformOrigin: `${zoom.x}% ${zoom.y}%`,
           }}
         />
       </div>
@@ -60,28 +85,40 @@ export default function ImageCarousel({ images }: ImageCarouselProps) {
           <button
             onClick={prevSlide}
             className="carousel-btn carousel-btn-prev position-absolute top-50 start-0 translate-middle-y bg-white border-0 rounded-circle shadow"
-            style={{ width: "50px", height: "50px", left: "20px" }}
+            style={{ width: arrowSize, height: arrowSize, left: arrowPosition }}
           >
             <i
-              className="ri-arrow-left-s-line fs-4"
-              style={{ color: "black" }}
+              className={
+                compact
+                  ? "ri-arrow-left-s-line fs-5"
+                  : "ri-arrow-left-s-line fs-4"
+              }
+              style={{ color: "gray" }}
             ></i>
           </button>
           <button
             onClick={nextSlide}
             className="carousel-btn carousel-btn-next position-absolute top-50 end-0 translate-middle-y bg-white border-0 rounded-circle shadow"
-            style={{ width: "50px", height: "50px", right: "20px" }}
+            style={{
+              width: arrowSize,
+              height: arrowSize,
+              right: arrowPosition,
+            }}
           >
             <i
-              className="ri-arrow-right-s-line fs-4"
-              style={{ color: "black" }}
+              className={
+                compact
+                  ? "ri-arrow-right-s-line fs-5"
+                  : "ri-arrow-right-s-line fs-4"
+              }
+              style={{ color: "gray" }}
             ></i>
           </button>
         </>
       )}
 
-      {/* Thumbnail Gallery */}
-      {images.length > 1 && (
+      {/* Thumbnail Gallery - Hidden in compact mode */}
+      {images.length > 1 && !compact && (
         <div className="carousel-thumbnails d-flex justify-content-center gap-3 mt-4">
           {images.map((image, index) => (
             <button
@@ -112,8 +149,20 @@ export default function ImageCarousel({ images }: ImageCarouselProps) {
 
       {/* Image Counter */}
       {images.length > 1 && (
-        <div className="carousel-counter text-center mt-3">
-          <span className="badge bg-dark bg-opacity-75 text-white px-3 py-2">
+        <div
+          className={
+            compact
+              ? "carousel-counter text-center mt-2"
+              : "carousel-counter text-center mt-3"
+          }
+        >
+          <span
+            className={
+              compact
+                ? "badge bg-dark bg-opacity-75 text-white px-2 py-1"
+                : "badge bg-dark bg-opacity-75 text-white px-3 py-2"
+            }
+          >
             {currentIndex + 1} / {images.length}
           </span>
         </div>

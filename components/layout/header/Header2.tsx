@@ -71,6 +71,16 @@ export default function Header2({
                           Contact
                         </Link>
                       </li>
+                      <li className="nav-item">
+                        <Link className="nav-link" href="/projects">
+                          My Projects
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link className="nav-link" href="/sell">
+                          Templates
+                        </Link>
+                      </li>
                     </ul>
                   </div>
                 </div>
