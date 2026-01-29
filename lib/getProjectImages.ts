@@ -31,7 +31,10 @@ export function getProjectImages(projectId: string): string[] {
         const numB = parseInt(b.match(/\d+/)?.[0] || "0");
         return numA - numB;
       })
-      .map((file) => `/assets/imgs/projects/${projectId}/${file}`);
+      .map((file) => {
+        const basePath = process.env.NODE_ENV === 'production' ? '/portfolio26' : '';
+        return `${basePath}/assets/imgs/projects/${projectId}/${file}`;
+      });
   } catch (error) {
     console.error(`Error reading project images for ${projectId}:`, error);
     return [];
