@@ -5,25 +5,15 @@ import Link from "next/link";
 import ClientImageCarousel from "./ClientImageCarousel";
 import PreviewModal from "@/components/PreviewModal";
 import WelcomeModal from "./WelcomeModal";
-
-interface TemplateItem {
-  id: string;
-  name: string;
-  url: string;
-  brand: string;
-  screenshots: string[];
-}
-
-interface Category {
-  name: string;
-  items: TemplateItem[];
-}
+import { Category, TemplateItem } from "@/lib/templateData";
 
 interface ClientTemplateGridProps {
   categories: Category[];
 }
 
-export default function ClientTemplateGrid({ categories }: ClientTemplateGridProps) {
+export default function ClientTemplateGrid({
+  categories,
+}: ClientTemplateGridProps) {
   const [modalState, setModalState] = useState<{
     isOpen: boolean;
     item: TemplateItem | null;
@@ -40,43 +30,53 @@ export default function ClientTemplateGrid({ categories }: ClientTemplateGridPro
 
   const handleWelcomeSubmit = async (email: string, selected: string[]) => {
     setInterests(selected);
-    const data = { email, interests: selected, timestamp: new Date().toISOString() };
-    console.log('SAVE THIS TO /public/data/interests.json:', data);
+    const data = {
+      email,
+      interests: selected,
+      timestamp: new Date().toISOString(),
+    };
+    console.log("SAVE THIS TO /public/data/interests.json:", data);
   };
 
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
 
-  const filteredCategories = activeFilters.length > 0
-    ? categories.filter(cat => activeFilters.includes(cat.name))
-    : categories;
+  const filteredCategories =
+    activeFilters.length > 0
+      ? categories.filter((cat) => activeFilters.includes(cat.name))
+      : categories;
 
-  const handleWelcomeSubmitUpdated = async (email: string, selected: string[]) => {
+  const handleWelcomeSubmitUpdated = async (
+    email: string,
+    selected: string[],
+  ) => {
     setInterests(selected);
     setActiveFilters(selected);
     await handleWelcomeSubmit(email, selected);
   };
 
   const toggleFilter = (catName: string) => {
-    setActiveFilters(prev =>
-      prev.includes(catName) ? prev.filter(c => c !== catName) : [...prev, catName]
+    setActiveFilters((prev) =>
+      prev.includes(catName)
+        ? prev.filter((c) => c !== catName)
+        : [...prev, catName],
     );
   };
 
   return (
     <>
       <WelcomeModal
-        categories={categories.map(c => c.name)}
+        categories={categories.map((c) => c.name)}
         onSubmit={handleWelcomeSubmitUpdated}
       />
 
       {/* Filter Pills */}
       <div className="mb-4 d-flex flex-wrap gap-2 align-items-center">
         <span className="text-muted small">Filter:</span>
-        {categories.map(cat => (
+        {categories.map((cat) => (
           <button
             key={cat.name}
             onClick={() => toggleFilter(cat.name)}
-            className={`btn btn-sm ${activeFilters.includes(cat.name) ? 'btn-primary' : 'btn-outline-secondary'}`}
+            className={`btn btn-sm ${activeFilters.includes(cat.name) ? "btn-primary" : "btn-outline-secondary"}`}
           >
             {cat.name}
           </button>
@@ -146,10 +146,7 @@ export default function ClientTemplateGrid({ categories }: ClientTemplateGridPro
                                 strokeWidth="2"
                                 fill="#fff"
                               />
-                              <path
-                                d="M10 8L16 12L10 16V8Z"
-                                fill="#4b6cb7"
-                              />
+                              <path d="M10 8L16 12L10 16V8Z" fill="#4b6cb7" />
                             </svg>
                             <p
                               className="text-muted mt-2 mb-0"
@@ -183,7 +180,15 @@ export default function ClientTemplateGrid({ categories }: ClientTemplateGridPro
                           Preview
                         </a>
                       )}
-                      <Link href={`/pricing`} className="btn btn-primary">
+                      <Link
+                        href={`/pricing?template=${it.id}`}
+                        className="btn btn-primary"
+                        onClick={() => {
+                          if (typeof window !== 'undefined') {
+                            sessionStorage.setItem('selectedTemplate', JSON.stringify(it));
+                          }
+                        }}
+                      >
                         Hire me
                       </Link>
                     </div>

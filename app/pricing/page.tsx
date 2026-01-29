@@ -1,354 +1,399 @@
+"use client";
 
-import Layout from "@/components/layout/Layout"
-import Link from "next/link"
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
+import Link from "next/link";
+import Layout from "@/components/layout/Layout";
+import { findTemplateById } from "@/lib/templateData";
+import ClientImageCarousel from "../sell/ClientImageCarousel";
+import { PopupModal } from "react-calendly";
+
 export default function Pricing() {
+  const searchParams = useSearchParams();
+  const templateId = searchParams.get("template");
+  const [selectedTemplate, setSelectedTemplate] = useState<any>(null);
+  const [selectedPackage, setSelectedPackage] = useState<string>("");
+  const [isCalendlyOpen, setIsCalendlyOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    company: "",
+    phone: "",
+    requirements: "",
+  });
 
-	return (
-		<>
+  useEffect(() => {
+    if (templateId) {
+      // Try to get template from sessionStorage first (includes screenshots)
+      const storedTemplate = sessionStorage.getItem('selectedTemplate');
+      if (storedTemplate) {
+        setSelectedTemplate(JSON.parse(storedTemplate));
+      } else {
+        // Fallback to finding by ID (no screenshots)
+        const foundTemplate = findTemplateById(templateId);
+        if (foundTemplate) {
+          setSelectedTemplate(foundTemplate);
+        }
+      }
+    }
+  }, [templateId]);
 
-			<Layout headerStyle={1} footerStyle={1}>
-				<div>
-					<section className="section-pricing-1 pt-130 pb-150">
-						<div className="container">
-							<div className="row">
-								<div className="col-lg-8 mx-lg-auto mb-8">
-									<div className="text-center">
-										<Link href="/#" className="btn btn-gradient d-inline-block text-uppercase">
-											My Pricing
-										</Link>
-										<h3 className="ds-3 mt-3 mb-4 text-dark">
-											Affordable <span className="text-300">Solutions for Every</span> Budget
-										</h3>
-										<p className="text-300 fs-5 mb-0">
-											Flexible Plans Tailored to Meet Your Unique Needs, Ensuring High-Quality Services <br />
-											Without Breaking the Bank
-										</p>
-									</div>
-									<div className="row mt-8 d-flex">
-										<div className="col-md-6">
-											<div className="card-pricing-1 p-6 rounded-4 h-100 d-flex flex-column">
-												<span className="text-uppercase fs-7">basic</span> <br />
-												<h3 className="ds-3 fw-medium text-primary mb-5">$49<span className="text-300 fs-4">/Hour</span></h3>
-												<ul className="ps-3 border-top border-600 pt-5 mb-auto">
-													<li>
-														<p className="text-300">Require your wireframe</p>
-													</li>
-													<li>
-														<p className="text-300">Design using Figma, Framer</p>
-													</li>
-													<li>
-														<p className="text-300">Develop with Webflow, React, WordPress, Laravel/PHP</p>
-													</li>
-													<li>
-														<p className="text-300">Remote/Online collaboration</p>
-													</li>
-													<li>
-														<p className="text-300">Available on business days, no weekends</p>
-													</li>
-													<li>
-														<p className="text-300">6 months of support</p>
-													</li>
-												</ul>
-												<Link href="/#" className="btn btn-primary mt-5 w-100 justify-content-center">
-													Order Now
-													<i className="ri-arrow-right-up-line" />
-												</Link>
-											</div>
-										</div>
-										<div className="col-md-6">
-											<div className="card-pricing-1 p-6 rounded-4 align-self-stretch mt-md-0 mt-6">
-												<span className="text-uppercase fs-7">Business</span> <br />
-												<h3 className="ds-3 fw-medium text-primary mb-5">$99<span className="text-300 fs-4">/Hour</span></h3>
-												<ul className="ps-3 border-top border-600 pt-5">
-													<li>
-														<p className="text-300">No wireframe needed</p>
-													</li>
-													<li>
-														<p className="text-300">Design using Figma, Framer</p>
-													</li>
-													<li>
-														<p className="text-300">Develop with Webflow, React, WordPress, Laravel/PHP</p>
-													</li>
-													<li>
-														<p className="text-300">Remote/Online collaboration</p>
-													</li>
-													<li>
-														<p className="text-300">Available on business days, no weekends</p>
-													</li>
-													<li>
-														<p className="text-300">12 months of support</p>
-													</li>
-													<li>
-														<p className="text-300">Your project is always a priority</p>
-													</li>
-													<li>
-														<p className="text-300">Customer care gifts included</p>
-													</li>
-												</ul>
-												<Link href="/#" className="btn btn-primary mt-5 w-100 justify-content-center">
-													Order Now
-													<i className="ri-arrow-right-up-line" />
-												</Link>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div className="row mt-8">
-								<div className="col-lg-6  mx-md-auto text-center">
-									<h2 className="text-300 mb-8">
-										Common Questions
-									</h2>
-									<div className="accordion">
-										<div className="mb-3 card border-2 rounded-4">
-											<div className="card-header p-0 border-0">
-												<Link className="p-3 collapsed text-900 fw-bold d-flex align-items-center" data-bs-toggle="collapse" href="/#collapseSevent">
-													<p className="fs-5 mb-0 text-dark">What is the main focus of your portfolio?</p>
-													<span className="ms-auto arrow me-2 icon-shape">
-														<i className="ri-add-line" />
-													</span>
-												</Link>
-											</div>
-											<div id="collapseSevent" className="collapse" data-bs-parent=".accordion">
-												<p className="px-4 pt-0 text-start card-body">
-													You may also realize cost savings from your energy efficient choices in your custom home. Federal tax credits for some green materials can allow you to deduct as much.
-												</p>
-											</div>
-										</div>
-										<div className="mb-3 card border-2 rounded-4">
-											<div className="card-header p-0 border-0">
-												<Link className="p-3 collapsed text-900 fw-bold d-flex align-items-center" data-bs-toggle="collapse" href="/#collapseEight">
-													<p className="fs-5 mb-0 text-dark">Will you include a blog or other written content?</p>
-													<span className="ms-auto arrow me-2 icon-shape">
-														<i className="ri-add-line" />
-													</span>
-												</Link>
-											</div>
-											<div id="collapseEight" className="collapse" data-bs-parent=".accordion">
-												<p className="px-4 pt-0 text-start card-body">
-													You may also realize cost savings from your energy efficient choices in your custom home. Federal tax credits for some green materials can allow you to deduct as much.
-												</p>
-											</div>
-										</div>
-										<div className="mb-3 card border-2 rounded-4">
-											<div className="card-header p-0 border-0">
-												<Link className="p-3 collapsed text-900 fw-bold d-flex align-items-center" data-bs-toggle="collapse" href="/#collapseNine">
-													<p className="fs-5 mb-0 text-dark">How much do your services cost?</p>
-													<span className="ms-auto arrow me-2 icon-shape">
-														<i className="ri-add-line" />
-													</span>
-												</Link>
-											</div>
-											<div id="collapseNine" className="collapse" data-bs-parent=".accordion">
-												<p className="px-4 pt-0 text-start card-body">
-													You may also realize cost savings from your energy efficient choices in your custom home. Federal tax credits for some green materials can allow you to deduct as much.
-												</p>
-											</div>
-										</div>
-										<div className="mb-3 card border-2 rounded-4">
-											<div className="card-header p-0 border-0">
-												<Link className="p-3 collapsed text-900 fw-bold d-flex align-items-center" data-bs-toggle="collapse" href="/#collapseTen">
-													<p className="fs-5 mb-0 text-dark">How long does it take to see results?</p>
-													<span className="ms-auto arrow me-2 icon-shape">
-														<i className="ri-add-line" />
-													</span>
-												</Link>
-											</div>
-											<div id="collapseTen" className="collapse" data-bs-parent=".accordion">
-												<p className="px-4 pt-0 text-start card-body">
-													You may also realize cost savings from your energy efficient choices in your custom home. Federal tax credits for some green materials can allow you to deduct as much.
-												</p>
-											</div>
-										</div>
-										<div className="mb-3 card border-2 rounded-4">
-											<div className="card-header p-0 border-0">
-												<Link className="p-3 collapsed text-900 fw-bold d-flex align-items-center" data-bs-toggle="collapse" href="/#collapseEleven">
-													<p className="fs-5 mb-0 text-dark">Do you offer ongoing support?</p>
-													<span className="ms-auto arrow me-2 icon-shape">
-														<i className="ri-add-line" />
-													</span>
-												</Link>
-											</div>
-											<div id="collapseEleven" className="collapse" data-bs-parent=".accordion">
-												<p className="px-4 pt-0 text-start card-body">
-													You may also realize cost savings from your energy efficient choices in your custom home. Federal tax credits for some green materials can allow you to deduct as much.
-												</p>
-											</div>
-										</div>
-										<div className="mb-3 card border-2 rounded-4">
-											<div className="card-header p-0 border-0">
-												<Link className="p-3 collapsed text-900 fw-bold d-flex align-items-center" data-bs-toggle="collapse" href="/#collapseTwelve">
-													<p className="fs-5 mb-0 text-dark">Do you work with businesses in my industry?</p>
-													<span className="ms-auto arrow me-2 icon-shape">
-														<i className="ri-add-line" />
-													</span>
-												</Link>
-											</div>
-											<div id="collapseTwelve" className="collapse" data-bs-parent=".accordion">
-												<p className="px-4 pt-0 text-start card-body">
-													You may also realize cost savings from your energy efficient choices in your custom home. Federal tax credits for some green materials can allow you to deduct as much.
-												</p>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</section>
-					{/*Static 1*/}
-					<div className="section-static-1 position-relative overflow-hidden z-0 py-8 bg-6">
-						<div className="container">
-							<div className="inner">
-								<div className="row align-items-center justify-content-between">
-									<div className="col-lg-auto col-md-6">
-										<div className="counter-item-cover counter-item">
-											<div className="content text-center mx-auto d-flex align-items-center">
-												<span className="ds-3 count text-primary fw-medium my-0">+<span className="odometer ds-1 text-dark fw-semibold">12</span></span>
-												<div className="text-start ms-2">
-													<p className="fs-5 mb-0 text-300">Year of</p>
-													<p className="fs-5 mb-0 fw-bold">Experience</p>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div className="col-lg-auto col-md-6">
-										<div className="counter-item-cover counter-item">
-											<div className="content text-center mx-auto d-flex align-items-center">
-												<span className="ds-3 count text-primary fw-medium my-0">+<span className="odometer ds-1 text-dark fw-semibold">250</span></span>
-												<div className="text-start ms-2">
-													<p className="fs-5 mb-0 text-300">Projects</p>
-													<p className="fs-5 mb-0 fw-bold">Completed</p>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div className="col-lg-auto col-md-6">
-										<div className="counter-item-cover counter-item">
-											<div className="content text-center mx-auto d-flex align-items-center">
-												<span className="ds-3 count text-primary fw-medium my-0">+<span className="odometer ds-1 text-dark fw-semibold">680</span></span>
-												<div className="text-start ms-2">
-													<p className="fs-5 mb-0 text-300">Satisfied</p>
-													<p className="fs-5 mb-0 fw-bold">Happy Clients</p>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div className="col-lg-auto col-md-6">
-										<div className="counter-item-cover counter-item">
-											<div className="content text-center mx-auto d-flex align-items-center">
-												<span className="ds-3 count text-primary fw-medium my-0">+<span className="odometer ds-1 text-dark fw-semibold">18</span></span>
-												<div className="text-start ms-2">
-													<p className="fs-5 mb-0 text-300">Awards</p>
-													<p className="fs-5 mb-0 fw-bold">Won Received</p>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					{/* Contact 1*/}
-					<section id="contact" className="section-contact-1 bg-900 position-relative pt-150 pb-lg-250 pb-150 overflow-hidden">
-						<div className="container position-relative z-1">
-							<h3 className="ds-3 mt-3 mb-3 text-primary">Get in touch</h3>
-							<span className="fs-5 fw-medium text-200">
-								I'm always excited to take on new projects and collaborate with innovative minds. If you
-								<br />
-								have a project in mind or just want to chat about design, feel free to reach out!
-							</span>
-							<div className="row mt-8">
-								<div className="col-lg-4 d-flex flex-column">
-									<div className="d-flex align-items-center mb-4 position-relative d-inline-flex">
-										<div className="bg-white icon-flip position-relative icon-shape icon-xxl border-linear-2 border-2 rounded-4">
-											<i className="ri-phone-fill text-primary fs-26" />
-										</div>
-										<div className="ps-3">
-											<span className="text-400 fs-5">Phone Number</span>
-											<h6 className="mb-0">+1-234-567-8901</h6>
-										</div>
-										<Link href="/tel:+1-234-567-8901" className="position-absolute top-0 start-0 w-100 h-100" />
-									</div>
-									<div className="d-flex align-items-center mb-4 position-relative d-inline-flex">
-										<div className="bg-white icon-flip position-relative icon-shape icon-xxl border-linear-2 border-2 rounded-4">
-											<i className="ri-mail-fill text-primary fs-26" />
-										</div>
-										<div className="ps-3">
-											<span className="text-400 fs-5">Email</span>
-											<h6 className="mb-0">contact@william.design</h6>
-										</div>
-										<Link href="/mailto:someone@example.com" className="position-absolute top-0 start-0 w-100 h-100" />
-									</div>
-									<div className="d-flex align-items-center mb-4 position-relative d-inline-flex">
-										<div className="bg-white icon-flip position-relative icon-shape icon-xxl border-linear-2 border-2 rounded-4">
-											<i className="ri-skype-fill text-primary fs-26" />
-										</div>
-										<div className="ps-3">
-											<span className="text-400 fs-5">Skype</span>
-											<h6 className="mb-0">WilliamDesignUX</h6>
-										</div>
-										<Link href="/skype:SKYPENAME?add" className="position-absolute top-0 start-0 w-100 h-100" />
-									</div>
-									<div className="d-flex align-items-center mb-4 position-relative d-inline-flex">
-										<div className="bg-white icon-flip position-relative icon-shape icon-xxl border-linear-2 border-2 rounded-4">
-											<i className="ri-map-2-fill text-primary fs-26" />
-										</div>
-										<div className="ps-3">
-											<span className="text-400 fs-5">Address</span>
-											<h6 className="mb-0">0811 Erdman Prairie, Joaville CA</h6>
-										</div>
-										<Link href="/https://maps.google.com/maps?q=1st+avenue,New+York" className="position-absolute top-0 start-0 w-100 h-100" />
-									</div>
-								</div>
-								<div className="col-lg-7 offset-lg-1 ps-lg-0 pt-5 pt-lg-0">
-									<div className="position-relative">
-										<div className="position-relative z-2">
-											<h3>Leave a messge</h3>
-											<form action="#">
-												<div className="row mt-3">
-													<div className="col-md-6 ">
-														<label className="mb-1 mt-3 text-dark" htmlFor="name">Your name <span className="text-primary">*</span></label>
-														<input type="text" className="form-control border rounded-3" id="name" name="name" placeholder="John Doe" aria-label="username" />
-													</div>
-													<div className="col-md-6">
-														<label className="mb-1 mt-3 text-dark" htmlFor="email">Email address <span className="text-primary">*</span></label>
-														<input type="text" className="form-control border rounded-3" id="email" name="email" placeholder="contact.john@gmail.com" aria-label="email" />
-													</div>
-													<div className="col-md-6">
-														<label className="mb-1 mt-3 text-dark" htmlFor="phone">Your phone <span className="text-primary">*</span></label>
-														<input type="text" className="form-control border rounded-3" id="phone" name="phone" placeholder="+01 234 567 89" aria-label="phone" />
-													</div>
-													<div className="col-md-6">
-														<label className="mb-1 mt-3 text-dark" htmlFor="subject">Subject <span className="text-primary">*</span></label>
-														<input type="text" className="form-control border rounded-3" id="subject" name="subject" placeholder="I want to contact for...." aria-label="subject" />
-													</div>
-													<div className="col-12">
-														<label className="mb-1 mt-3 text-dark" htmlFor="message">Message <span className="text-primary">*</span></label>
-														<textarea className="form-control border rounded-3 pb-10" id="message" name="message" placeholder="Your message here...." aria-label="With textarea" />
-													</div>
-													<div className="col-12">
-														<button type="submit" className="btn btn-gradient mt-3">
-															Send Message
-															<i className="ri-arrow-right-up-line" />
-														</button>
-													</div>
-												</div>
-											</form>
-										</div>
-										<div className="z-0 bg-primary-dark rectangle-bg z-1 rounded-3" />
-									</div>
-								</div>
-							</div>
-						</div>
-						<div className="scroll-move-right position-absolute bottom-0 start-50 translate-middle-x bg-900 overflow-hidden">
-							<div className="wow img-custom-anim-top">
-								<h3 className="stroke fs-280 text-lowercase text-900 mb-0 lh-1">william.design</h3>
-							</div>
-						</div>
-					</section>
-				</div>
+  const handlePackageSelect = (pkg: string) => {
+    setSelectedPackage(pkg);
+  };
 
-			</Layout>
-		</>
-	)
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const requestData = {
+      template: selectedTemplate?.name || 'Not specified',
+      brand: selectedTemplate?.brand || 'Not specified',
+      package: selectedPackage,
+      name: formData.name,
+      email: formData.email,
+      company: formData.company,
+      phone: formData.phone,
+      requirements: formData.requirements,
+      timestamp: new Date().toISOString(),
+    };
+
+    try {
+      // Use Formspree (free service that sends form data to your email)
+      const response = await fetch('https://formspree.io/f/mlgnlblw', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(requestData),
+      });
+
+      if (response.ok) {
+        alert(
+          "Thank you! Your request has been saved. I'll contact you via email shortly.",
+        );
+        setFormData({
+          name: "",
+          email: "",
+          company: "",
+          phone: "",
+          requirements: "",
+        });
+      } else {
+        alert("There was an issue saving your request. Please try again.");
+      }
+    } catch (error) {
+      console.error('Error submitting request:', error);
+      alert("There was an issue saving your request. Please try again.");
+    }
+  };
+
+  const packages = [
+    {
+      id: "starter",
+      name: "Starter",
+      price: "$200",
+      features: [
+        "Ready-to-deploy template",
+        "No customization",
+        "Basic setup & deployment",
+        "Delivered in less than 1 week",
+        "3 months support",
+        "Perfect for quick launch",
+      ],
+    },
+    {
+      id: "professional",
+      name: "Professional",
+      price: "$800",
+      features: [
+        "Template deployment",
+        "Basic customization included",
+        "Brand colors & logo integration",
+        "Minor feature adjustments",
+        "Delivered within 2 weeks",
+        "6 months support",
+      ],
+    },
+    {
+      id: "enterprise",
+      name: "Enterprise",
+      price: "$2,500+",
+      features: [
+        "Full custom development",
+        "Complete feature customization",
+        "Custom APIs & integrations",
+        "Dedicated developer support",
+        "Priority delivery",
+        "12 months extended support",
+      ],
+    },
+  ];
+
+  return (
+    <Layout headerStyle={2} footerStyle={2}>
+      <div>
+        <section className="section-pricing-1 pt-130 pb-150">
+          <div className="container">
+            {/* Selected Template Display */}
+            {selectedTemplate && (
+              <div className="card shadow-sm mb-5" style={{ borderRadius: 12 }}>
+                <div className="card-body p-4">
+                  <div className="row align-items-center">
+                    <div className="col-md-5">
+                      {selectedTemplate.screenshots?.length > 0 ? (
+                        <ClientImageCarousel images={selectedTemplate.screenshots} compact={true} />
+                      ) : (
+                        <div
+                          style={{
+                            height: 220,
+                            background:
+                              "linear-gradient(90deg,#f0f2f5,#e9edf2)",
+                            borderRadius: 8,
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                          }}
+                        >
+                          <p className="text-muted">No screenshots available</p>
+                        </div>
+                      )}
+                    </div>
+                    <div className="col-md-7">
+                      <div className="badge bg-primary bg-opacity-10 text-primary mb-2">
+                        Selected Template
+                      </div>
+                      <h2 className="fs-28 mb-2">{selectedTemplate.name}</h2>
+                      <p className="text-muted mb-3">
+                        Brand: {selectedTemplate.brand}
+                      </p>
+                      <p className="text-300 mb-0">
+                        Choose a package below that fits your needs for
+                        deploying this template.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <div className="row">
+              <div className="col-lg-8 mx-lg-auto mb-8">
+                <div className="text-center">
+                  <Link
+                    href="/#"
+                    className="btn btn-gradient d-inline-block text-uppercase"
+                  >
+                    My Pricing
+                  </Link>
+                  <h3 className="ds-3 mt-3 mb-4 text-dark">
+                    Affordable{" "}
+                    <span className="text-300">Solutions for Every</span> Budget
+                  </h3>
+                  <p className="text-300 fs-5 mb-0">
+                    Flexible Plans Tailored to Meet Your Unique Needs, Ensuring
+                    High-Quality Services <br />
+                    Without Breaking the Bank
+                  </p>
+                </div>
+
+                {/* Pricing Cards */}
+                <div className="row mt-8 d-flex">
+                  {packages.map((pkg) => (
+                    <div key={pkg.id} className="col-md-4 mt-md-0 mt-6">
+                      <div
+                        className={`card-pricing-1 p-3 rounded-4 h-100 d-flex flex-column ${
+                          selectedPackage === pkg.id
+                            ? "border-2 border-primary"
+                            : ""
+                        }`}
+                        style={{
+                          cursor: "pointer",
+                          transition: "all 0.3s ease",
+                        }}
+                        onClick={() => handlePackageSelect(pkg.id)}
+                      >
+                        <div className="d-flex justify-content-between align-items-center">
+                          <span
+                            className={`text-uppercase fs-7 ${
+                              selectedPackage === pkg.id ? "text-primary" : ""
+                            }`}
+                          >
+                            {pkg.name}
+                          </span>
+                          {selectedPackage === pkg.id && (
+                            <i className="ri-check-circle-fill text-primary fs-4"></i>
+                          )}
+                        </div>
+                        <h3 className="ds-3 fw-medium text-primary mb-5">
+                          {pkg.price}
+                        </h3>
+                        <ul className="ps-3 border-top border-600 pt-5 mb-auto">
+                          {pkg.features.map((feature, idx) => (
+                            <li key={idx}>
+                              <p className="text-300">{feature}</p>
+                            </li>
+                          ))}
+                        </ul>
+                        <button
+                          className={`btn ${
+                            selectedPackage === pkg.id
+                              ? "btn-primary"
+                              : "btn-outline-primary"
+                          } mt-5 w-100 justify-content-center`}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handlePackageSelect(pkg.id);
+                          }}
+                        >
+                          {selectedPackage === pkg.id
+                            ? "Selected"
+                            : "Select Package"}
+                          <i className="ri-arrow-right-up-line ms-2" />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Contact Form */}
+                {selectedPackage && (
+                  <div className="row mt-8">
+                    <div className="col-12">
+                      <div
+                        className="card shadow-sm"
+                        style={{ borderRadius: 12 }}
+                      >
+                        <div className="card-body p-5">
+                          <h3 className="fs-28 mb-2">
+                            Almost there! Tell me about your project
+                          </h3>
+                          <p className="text-300 mb-4">
+                            Fill in the details below and I'll get back to you
+                            within 24 hours.
+                          </p>
+
+                          <form onSubmit={handleSubmit}>
+                            <div className="row g-3">
+                              <div className="col-md-6">
+                                <label className="form-label">
+                                  Name <span className="text-danger">*</span>
+                                </label>
+                                <input
+                                  type="text"
+                                  name="name"
+                                  className="form-control"
+                                  required
+                                  value={formData.name}
+                                  onChange={handleInputChange}
+                                />
+                              </div>
+                              <div className="col-md-6">
+                                <label className="form-label">
+                                  Email <span className="text-danger">*</span>
+                                </label>
+                                <input
+                                  type="email"
+                                  name="email"
+                                  className="form-control"
+                                  required
+                                  value={formData.email}
+                                  onChange={handleInputChange}
+                                />
+                              </div>
+                              <div className="col-md-6">
+                                <label className="form-label">
+                                  Company/Business
+                                </label>
+                                <input
+                                  type="text"
+                                  name="company"
+                                  className="form-control"
+                                  value={formData.company}
+                                  onChange={handleInputChange}
+                                />
+                              </div>
+                              <div className="col-md-6">
+                                <label className="form-label">
+                                  Phone Number
+                                </label>
+                                <input
+                                  type="tel"
+                                  name="phone"
+                                  className="form-control"
+                                  value={formData.phone}
+                                  onChange={handleInputChange}
+                                />
+                              </div>
+                              <div className="col-12">
+                                <label className="form-label">
+                                  Project Requirements
+                                </label>
+                                <textarea
+                                  name="requirements"
+                                  className="form-control"
+                                  rows={5}
+                                  placeholder="Tell me about your specific needs, timeline, and any questions you have..."
+                                  value={formData.requirements}
+                                  onChange={handleInputChange}
+                                />
+                              </div>
+                              <div className="col-12">
+                                <div className="d-flex gap-3 flex-wrap">
+                                  <button
+                                    type="submit"
+                                    className="btn btn-primary btn-lg"
+                                  >
+                                    <i className="ri-send-plane-fill me-2" />
+                                    Submit Request
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => setIsCalendlyOpen(true)}
+                                    className="btn btn-outline-primary btn-lg"
+                                  >
+                                    <i className="ri-calendar-line me-2" />
+                                    Schedule a Meeting
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* No Package Selected Message */}
+                {!selectedPackage && (
+                  <div className="row mt-8">
+                    <div className="col-12">
+                      <div className="alert alert-info text-center">
+                        <i className="ri-information-line me-2"></i>
+                        Please select a package above to continue with your
+                        request.
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      {/* Calendly Popup Modal */}
+      {typeof window !== 'undefined' && (
+        <PopupModal
+          url="https://calendly.com/ahmedfouad01099"
+          onModalClose={() => setIsCalendlyOpen(false)}
+          open={isCalendlyOpen}
+          rootElement={document.body}
+        />
+      )}
+    </Layout>
+  );
 }
