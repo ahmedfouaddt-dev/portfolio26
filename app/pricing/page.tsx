@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Layout from "@/components/layout/Layout";
@@ -8,7 +8,7 @@ import { findTemplateById } from "@/lib/templateData";
 import ClientImageCarousel from "../sell/ClientImageCarousel";
 import { PopupModal } from "react-calendly";
 
-export default function Pricing() {
+function PricingContent() {
   const searchParams = useSearchParams();
   const templateId = searchParams.get("template");
   const [selectedTemplate, setSelectedTemplate] = useState<any>(null);
@@ -395,5 +395,23 @@ export default function Pricing() {
         />
       )}
     </Layout>
+  );
+}
+
+export default function Pricing() {
+  return (
+    <Suspense fallback={
+      <Layout headerStyle={2} footerStyle={2}>
+        <div className="section-pricing-1 pt-130 pb-150">
+          <div className="container">
+            <div className="text-center">
+              <p>Loading...</p>
+            </div>
+          </div>
+        </div>
+      </Layout>
+    }>
+      <PricingContent />
+    </Suspense>
   );
 }
